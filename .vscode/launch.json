@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    // You need first to start the application (e.g. npm run start:dev)
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Chrome - Launch Ionic debug",
+      "url": "http://localhost:8200",
+      "webRoot": "${workspaceFolder}"
+    },
+    // https://github.com/facebook/jest/issues/9430#issuecomment-1144204974
+    // This is the only way I've been able to get Jest debugging working so far. Not sure what made the difference but
+    // it's based on the example found here: https://github.com/Microsoft/vscode-recipes/tree/master/debugging-jest-tests
+    {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "env": {
+        "NODE_OPTIONS": "--experimental-vm-modules --es-module-specifier-resolution=node"
+      },
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      "args": ["--runInBand"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "disableOptimisticBPs": true
+    },
+    //https://create-react-app.dev/docs/debugging-tests
+    {
+      "name": "Debug CRA Tests",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/react-scripts",
+      "args": ["test", "--runInBand", "--no-cache", "--watchAll=false"],
+      "cwd": "${workspaceRoot}",
+      "protocol": "inspector",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "env": {
+        "CI": "true"
+      },
+      "disableOptimisticBPs": true
+    }
+  ]
+}

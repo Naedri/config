@@ -1,0 +1,38 @@
+{
+  "artificialDelayMilliseconds": 5000,
+  "keepExistingTerminalsOpen": false,
+  "runOnStartup": false,
+  "terminals": [
+    {
+      "splitTerminals": [
+        {
+          "name": "client",
+          "commands": ["clear ; npm run start:dev"],
+          "shouldRunCommands": false
+        },
+        {
+          "name": "server",
+          "commands": ["cd ../backend ; clear ; npm run start:prod"],
+          "shouldRunCommands": false
+        }
+      ]
+    },
+    {
+      "splitTerminals": [
+        {
+          "name": "cmd"
+        },
+        {
+          "name": "test",
+          "commands": ["clear ; npm run test"],
+          "shouldRunCommands": false
+        },
+        {
+          "name": "git",
+          "commands": ["git status"],
+          "shouldRunCommands": true
+        }
+      ]
+    }
+  ]
+}

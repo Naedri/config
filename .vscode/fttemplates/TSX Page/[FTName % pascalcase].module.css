@@ -1,0 +1,9 @@
+.[FTName % pascalcase] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+.[FTName % pascalcase]__element_modifier {
+  background-color: #4A993E;
+  }

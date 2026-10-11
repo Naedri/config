@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": ["source.fixAll", "source.format"],
+  "folders": [
+    {
+      "path": "..",
+    },
+  ],
+  "folderTemplates.templateFolderPath": "./.vscode/fttemplates",
+}
