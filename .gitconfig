@@ -1,0 +1,42 @@
+[user]
+  # git config --global user.email adrien.jallais@protonmail.com
+	email = adrien.jallais@protonmail.com
+  # git config --global user.name "Adrien JALLAIS"
+	name = Adrien JALLAIS
+[alias]
+[alias]
+	# Smart Interactive Rebase (Compatible with Ubuntu sh/dash)
+	rba        = "!f() { case \"$1\" in *[!0-9]*|\"\") git rebase -i --autostash \"$@\" ;; *) git rebase -i --autostash HEAD~\"$1\" ;; esac; }; f"
+	rbi        = "!f() { case \"$1\" in *[!0-9]*|\"\") git rebase -i \"$@\" ;; *) git rebase -i HEAD~\"$1\" ;; esac; }; f"
+	rc         = rebase --continue
+	ra         = rebase --abort
+
+	# Smart Soft Reset (Compatible with Ubuntu sh/dash)
+	soft       = "!f() { case \"$1\" in *[!0-9]*|\"\") git reset --soft \"$@\" ;; *) git reset --soft HEAD~\"$1\" ;; esac; }; f"
+	uncommit   = reset --soft HEAD~1
+
+	# Advanced Fixup Workflows
+	cf    = "!f() { git commit --fixup \"$1\" && git rebase -i --autosquash \"$1~1\"; }; f"
+
+[rebase]
+	# Automatically reorder and mark fixup commits during interactive rebases
+	autosquash = true
+
+[merge]
+	tool = meld
+
+[mergetool "meld"]
+	# Ensures Meld launches seamlessly on Ubuntu without extra confirmation prompts
+	prompt = false
+
+[diff]
+	tool = meld
+	guitool = meld
+
+[difftool "meld"]
+	prompt = false
+
+[core]
+	editor = gnome-text-editor
+[push]
+	autoSetupRemote = true
