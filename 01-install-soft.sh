@@ -1,8 +1,36 @@
 #!/bin/bash
 
 sudo apt update
-sudo apt install -y terminator gimp inkscape obs-studio curl wget git ca-certificates gnupg snapd
+
+# ==============================================================================
+# 1. SYSTEM & SECURITY INFRASTRUCTURE
+# ==============================================================================
+sudo apt install -y ca-certificates gnupg snapd
+
+# ==============================================================================
+# 2. WEB BROWSING & NATIVE CHROMIUM SETUP
+# ==============================================================================
+sudo add-apt-repository -y ppa:xtradeb/apps
+sudo apt update
+sudo apt install -y chromium curl wget
+
+# ==============================================================================
+# 3. DEVELOPMENT & TERMINAL UTILITIES
+# ==============================================================================
+sudo apt install -y terminator git meld insomnia xclip
 sudo snap install code --classic
+
+# ==============================================================================
+# 4. GRAPHICS & DESIGN
+# ==============================================================================
+sudo apt install -y gimp inkscape
+
+# ==============================================================================
+# 5. MEDIA & STREAMING
+# ==============================================================================
+sudo apt install -y obs-studio
+
+# ==============================================================================
+# 6. PRODUCTIVITY & NOTES
+# ==============================================================================
 sudo snap install obsidian --classic
-sudo snap install insomnia
-sudo snap install chromium
