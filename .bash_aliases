@@ -85,3 +85,4 @@ alias update='sudo apt update && sudo apt upgrade -y'
 alias c='clear'                     # Quickly clears the terminal screen
 alias myip='curl ifconfig.me; echo'  # Displays your public IP address
 alias path='echo -e ${PATH//:/\\n}'  # Prints a clean, readable list of your PATH directories
+alias copyx="xclip -selection clipboard" # Copy to clipboard
