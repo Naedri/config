@@ -18,7 +18,7 @@ sudo apt install -y chromium curl wget
 # 3. DEVELOPMENT & TERMINAL UTILITIES
 # ==============================================================================
 sudo apt install -y terminator git meld insomnia xclip
-sudo snap install code --classic
+snap install codium --classic
 
 # ==============================================================================
 # 4. GRAPHICS & DESIGN
