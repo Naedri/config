@@ -1,0 +1,22 @@
+layout {
+    cwd "/home/user/mon-projet"
+    pane split_direction="vertical" {
+        pane split_direction="horizontal" {
+            pane command="fish" {
+                args "-c" "npm run dev; exec fish"
+                close_on_exit true
+            }
+            pane command="fish" {
+                args "-c" "docker compose up; exec fish"
+                close_on_exit true
+            }
+        }
+        pane split_direction="horizontal" {
+            pane command="fish" {
+                args "-c" "git status; exec fish"
+                close_on_exit true
+            }
+            pane // Un terminal Fish vierge par défaut
+        }
+    }
+}

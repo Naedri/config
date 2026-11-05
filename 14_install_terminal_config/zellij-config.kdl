@@ -1,0 +1,3 @@
+// Force Zellij à utiliser Fish comme shell par défaut à l'intérieur de ses panneaux
+default_shell "fish"
+theme "default"
