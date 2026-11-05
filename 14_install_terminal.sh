@@ -6,18 +6,14 @@
 # Compatibilité : Ubuntu & Kubuntu (Détecte GNOME Terminal et Konsole)
 # ==============================================================================
 
-# Couleurs pour l'affichage
-GREEN='\033[0;32m'
-BLUE='\033[0;34m'
-YELLOW='\033[1;33m'
-NC='\033[0;37m' # Pas de couleur
+set -euo pipefail
 
-echo -e "${BLUE}=== Début de l'installation de l'environnement terminal ===${NC}"
+echo "=== Début de l'installation de l'environnement terminal ==="
 
 # ------------------------------------------------------------------------------
 # 1. GESTION PROPRE DES DOSSIERS ET IDEMPOTENCE
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[1/8] Création des répertoires de configuration...${NC}"
+echo "[1/8] Création des répertoires de configuration..."
 mkdir -p ~/.config/fish
 mkdir -p ~/.config/zellij/layouts
 mkdir -p ~/.local/share/fonts
@@ -25,10 +21,10 @@ mkdir -p ~/.local/share/fonts
 # ------------------------------------------------------------------------------
 # 2. VÉRIFICATION DES PRÉREQUIS
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[2/8] Vérification des prérequis (curl, wget, git)...${NC}"
+echo "[2/8] Vérification des prérequis (curl, wget, git, unzip)..."
 for pkg in curl wget git unzip; do
     if ! command -v $pkg &> /dev/null; then
-        echo -e "${YELLOW}-> Installation de $pkg...${NC}"
+        echo "-> Installation de $pkg..."
         sudo apt update && sudo apt install -y $pkg
     fi
 done
@@ -36,7 +32,7 @@ done
 # ------------------------------------------------------------------------------
 # 3. AJOUT DU PPA FISH & INSTALLATION
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[3/8] Installation de Fish Shell...${NC}"
+echo "[3/8] Installation de Fish Shell..."
 if ! command -v fish &> /dev/null; then
     sudo add-apt-repository ppa:fish-shell/release-3 -y
     sudo apt update
@@ -48,15 +44,16 @@ fi
 # ------------------------------------------------------------------------------
 # 4. INSTALLATION DE ZELLIJ
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[4/8] Installation de Zellij...${NC}"
+echo "[4/8] Installation de Zellij..."
 if ! command -v zellij &> /dev/null; then
     # Récupération de la dernière version stable via l'API GitHub
-    ZELLIJ_LATEST=$(curl -s https://github.com | grep -oP '"tag_name": "\K[^"]+')
+    ZELLIJ_LATEST=$(curl -s https://api.github.com/repos/zellij-org/zellij/releases/latest | grep -oP '"tag_name": "\K[^"]+')
     echo "-> Téléchargement de Zellij $ZELLIJ_LATEST..."
-    wget -qO /tmp/zellij.tar.gz "https://github.com{ZELLIJ_LATEST}/zellij-x86_64-unknown-linux-musl.tar.gz"
-    
+    wget -qO /tmp/zellij.tar.gz "https://github.com/zellij-org/zellij/releases/download/${ZELLIJ_LATEST}/zellij-x86_64-unknown-linux-musl.tar.gz" \
+        || { echo "Échec du téléchargement de Zellij."; exit 1; }
+
     sudo tar -C /usr/local/bin -xzf /tmp/zellij.tar.gz zellij
-    rm /tmp/zellij.tar.gz
+    rm -f /tmp/zellij.tar.gz
     sudo chmod +x /usr/local/bin/zellij
 else
     echo "-> Zellij est déjà installé."
@@ -65,7 +62,7 @@ fi
 # ------------------------------------------------------------------------------
 # 5. INTÉGRATION DE FZF (FUZZY FINDER) ET FISHER
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[5/8] Installation de FZF et Fisher...${NC}"
+echo "[5/8] Installation de FZF et Fisher..."
 if ! command -v fzf &> /dev/null; then
     sudo apt install -y fzf
 fi
@@ -73,54 +70,60 @@ fi
 # Installation de Fisher (Gestionnaire de paquets de Fish)
 if [ ! -f ~/.config/fish/functions/fisher.fish ]; then
     echo "-> Installation de Fisher..."
-    fish -c "curl -sL https://githubusercontent.com | source && fisher install jorgebucaran/fisher"
+    fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
 fi
 
 # Installation du plugin FZF dédié à Fish (pour un Ctrl+R parfait)
 fish -c "fisher install PatrickF1/fzf.fish"
 
 # ------------------------------------------------------------------------------
-# 6. TÉLÉCHARGEMENT DES NERD FONTS (Oxygen Mono & Ubuntu Mono)
+# 6. TÉLÉCHARGEMENT DES NERD FONTS (FiraMono & Ubuntu Mono)
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[6/8] Téléchargement et installation des polices Nerd Fonts...${NC}"
+echo "[6/8] Téléchargement et installation des polices Nerd Fonts..."
 
-# Téléchargement Oxygen Mono Nerd Font
-if [ ! -f ~/.local/share/fonts/OxygenMonoNerdFont-Regular.otf ]; then
-    echo "-> Téléchargement d'Oxygen Mono..."
-    wget -qO /tmp/Oxygen.zip https://github.com
-    unzip -qo /tmp/Oxygen.zip -d ~/.local/share/fonts/
-    rm /tmp/Oxygen.zip
+NERD_FONTS_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download"
+
+# Téléchargement FiraMono Nerd Font
+if ! ls ~/.local/share/fonts/FiraMonoNerdFont* &> /dev/null; then
+    echo "-> Téléchargement de FiraMono..."
+    wget -qO /tmp/FiraMono.zip "${NERD_FONTS_URL}/FiraMono.zip" \
+        || { echo "Échec du téléchargement de FiraMono."; exit 1; }
+    unzip -qo /tmp/FiraMono.zip -d ~/.local/share/fonts/
+    rm -f /tmp/FiraMono.zip
 fi
 
 # Téléchargement Ubuntu Mono Nerd Font
-if [ ! -f ~/.local/share/fonts/UbuntuMonoNerdFont-Regular.ttf ]; then
+if ! ls ~/.local/share/fonts/UbuntuMonoNerdFont* &> /dev/null; then
     echo "-> Téléchargement d'Ubuntu Mono..."
-    wget -qO /tmp/Ubuntu.zip https://github.com
+    wget -qO /tmp/Ubuntu.zip "${NERD_FONTS_URL}/UbuntuMono.zip" \
+        || { echo "Échec du téléchargement d'Ubuntu Mono."; exit 1; }
     unzip -qo /tmp/Ubuntu.zip -d ~/.local/share/fonts/
-    rm /tmp/Ubuntu.zip
+    rm -f /tmp/Ubuntu.zip
 fi
 
 # Mise à jour du cache des polices du système
 fc-cache -f ~/.local/share/fonts/
 
-# Application de la police Oxygen Mono par défaut selon l'environnement de bureau
-if [ "$XDG_CURRENT_DESKTOP" = "KDE" ]; then
-    echo "-> Configuration d'Oxygen Mono dans Konsole (Kubuntu)..."
+# Application de la police FiraMono par défaut selon l'environnement de bureau
+if command -v konsole &> /dev/null; then
+    echo "-> Configuration de FiraMono dans Konsole (Kubuntu)..."
     mkdir -p ~/.local/share/konsole
     if [ ! -f ~/.local/share/konsole/Profile\ 1.profile ]; then
-        echo -e "[General]\nName=Profile 1\nParent=FALLBACK/\n\n[Appearance]\nFont=OxygenMono Nerd Font,11,-1,5,50,0,0,0,0,0" > ~/.local/share/konsole/Profile\ 1.profile
+        echo -e "[General]\nName=Profile 1\nParent=FALLBACK/\n\n[Appearance]\nFont=FiraMono Nerd Font,11,-1,5,50,0,0,0,0,0" > ~/.local/share/konsole/Profile\ 1.profile
     fi
-else
-    echo "-> Configuration d'Oxygen Mono dans GNOME Terminal (Ubuntu)..."
+elif command -v gsettings &> /dev/null && gsettings list-schemas | grep -q org.gnome.Terminal; then
+    echo "-> Configuration de FiraMono dans GNOME Terminal (Ubuntu)..."
     PROFILE=$(gsettings get org.gnome.Terminal.ProfilesList default | tr -d "'")
     gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${PROFILE}/ use-system-font false
-    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${PROFILE}/ font 'OxygenMono Nerd Font 11'
+    gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:${PROFILE}/ font 'FiraMono Nerd Font 11'
+else
+    echo "-> Aucun terminal GNOME ou Konsole détecté, configuration de la police ignorée."
 fi
 
 # ------------------------------------------------------------------------------
 # 7. ÉCRITURE DES FICHIERS DE CONFIGURATION (Idempotent)
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[7/8] Génération des fichiers de configuration...${NC}"
+echo "[7/8] Génération des fichiers de configuration..."
 
 # --- Configuration de Zellij (~/.config/zellij/config.kdl) ---
 cat << 'EOF' > ~/.config/zellij/config.kdl
@@ -188,21 +191,21 @@ fi
 # EOF
 # fi
 
-
 # ------------------------------------------------------------------------------
 # 8. CHANGEMENT DU SHELL PAR DÉFAUT & ACTION
 # ------------------------------------------------------------------------------
-echo -e "${GREEN}[8/8] Définition de Fish comme Shell par défaut...${NC}"
-FISH_PATH=$(which fish)
+echo "[8/8] Définition de Fish comme Shell par défaut..."
+FISH_PATH=$(command -v fish)
 if [ "$SHELL" != "$FISH_PATH" ]; then
     sudo chsh -s "$FISH_PATH" "$USER"
-    echo -e "${YELLOW}Le shell par défaut a été modifié vers Fish.${NC}"
+    echo "Le shell par défaut a été modifié vers Fish."
 else
     echo "-> Fish est déjà le shell par défaut."
 fi
 
-echo -e "\n${BLUE}=======================================================${NC}"
-echo -e "${GREEN}Installation terminée avec succès !${NC}"
-echo -e "Pour appliquer les changements globaux (comme le shell par défaut),"
-echo -e "${YELLOW}Veuillez fermer votre session système ou redémarrer votre machine.${NC}"
-echo -e "=======================================================${NC}"
+echo ""
+echo "======================================================="
+echo "Installation terminée avec succès !"
+echo "Pour appliquer les changements globaux (comme le shell par défaut),"
+echo "Veuillez fermer votre session système ou redémarrer votre machine."
+echo "======================================================="
