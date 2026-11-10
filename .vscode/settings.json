@@ -1,0 +1,142 @@
+{
+  // 🧠 TYPESCRIPT SETUP
+  "js/ts.tsdk.path": "node_modules/typescript/lib", // Use workspace TypeScript version
+  "js/ts.tsdk.promptToUseWorkspaceVersion": true, // Don't prompt to switch TSDK
+  "js/ts.preferences.importModuleSpecifier": "relative", // Use relative imports orver
+  // 🎨 CODE FORMATTING (Prettier)
+  "editor.formatOnSave": true, // Format on save
+  "editor.formatOnSaveMode": "file", // Format all lines
+  "editor.formatOnPaste": false, // Do not format on paste
+  "editor.formatOnType": false, // Do not format while typing (semi-limited support)
+  "editor.defaultFormatter": "esbenp.prettier-vscode", // Use Prettier
+  // Fixes for Turborepo:
+  // "prettier.requireConfig": true, // ONLY format if a Prettier config is found nearby
+  // "prettier.configPath": "", // Look for the closest config file up from the active file
+  // "prettier.ignorePath": "", // Direct path to root ignore
+  // 🛠️ CODE ACTIONS (Fix + Organize)
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always",
+    "source.addMissingImports": "always"
+    "source.sortImports": "always"
+  },
+  // 🔍 ESLINT LINTING
+  "eslint.enable": true, // Enable ESLint
+  "eslint.run": "onType", // Run on each keystroke
+  "eslint.probe": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ], // File types to lint
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ], // Detect monorepo workspace roots
+  // 🧹 FILE EXCLUSIONS
+  "files.exclude": {
+    "**/dist": true,
+    "**/.next": true,
+    "**/node_modules": true,
+    "**/.turbo/**": true
+  },
+  "search.exclude": {
+    "**/dist": true,
+    "**/.next": true,
+    "**/node_modules": true,
+    "**/.turbo/**": true
+  }, // Hide from file tree & search
+  "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.next/**": true,
+    "**/node_modules/**": true,
+    "**/.turbo/**": true
+  },
+  // 🐙 GIT
+  "git.blame.editorDecoration.enabled": true,
+  "git.blame.editorDecoration.disableHover": false,
+  // 📟 TERMINAL SETTINGS
+  "terminal.integrated.defaultProfile.windows": "bash",
+  "workbench.colorTheme": "Dracula Theme Soft",
+  "workbench.tree.enableStickyScroll": true,
+  // 📙 DICTIONNARY EXTENSION
+  "cSpell.language": "en",
+  "cSpell.words": ["notnull", "Owlia", "Alerts", "elwave"],
+  // 🏷️ BETTER-COMMENTS EXTENSION
+  "better-comments.tags": [
+    {
+      "tag": "!",
+      "color": "#FF2D00",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "FIXME",
+      "color": "#00FFFF",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": true,
+      "italic": false
+    },
+    {
+      "tag": "?",
+      "color": "#3498DB",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "TBD",
+      "color": "#3498DB",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "//",
+      "color": "#474747",
+      "strikethrough": true,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "todo",
+      "color": "#FF8C00",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    },
+    {
+      "tag": "*",
+      "color": "#98C379",
+      "strikethrough": false,
+      "underline": false,
+      "backgroundColor": "transparent",
+      "bold": false,
+      "italic": false
+    }
+  ],
+  // 🤗 LLM
+  "continue.enableTabAutocomplete": false,
+  "continue.pauseCodebaseIndexOnStart": true,
+  "continue.pauseTabAutocompleteOnBattery": true,
+  "continue.disableQuickFix": true,
+  "continue.enableNextEdit": false,
+  "continue.showInlineTip": false,
+  "chat.disableAIFeatures": true,
+  "chat.viewSessions.orientation": "stacked",
+  "chat.byokUtilityModelDefault": "none",
+  "workbench.tips.enabled": false
+}
