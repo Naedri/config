@@ -74,7 +74,7 @@
       "italic": false
     },
     {
-      "tag": "FIXME",
+      "tag": "fixme",
       "color": "#00FFFF",
       "strikethrough": false,
       "underline": false,
@@ -92,7 +92,7 @@
       "italic": false
     },
     {
-      "tag": "TBD",
+      "tag": "tbd",
       "color": "#3498DB",
       "strikethrough": false,
       "underline": false,
